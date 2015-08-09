@@ -1,0 +1,35 @@
+<link rel="import" href="content-data.html">
+<link rel="import" href="thumbnail-tile.html">
+<link rel="import"  href="../bower_components/core-menu/core-menu.html">
+
+<polymer-element name="thumbnail-tiles">
+  <template>
+  <style>
+  :host{
+    /*width: 80%;*/
+    margin: 20px;
+  }
+
+  </style>
+  <content-data id="contents" posts="{{posts}}"></content-data>
+  <core-menu selected="0" id="thumbnailmenu">
+    <template repeat="{{post in posts}}">
+      <core-item>
+        <thumbnail-tile id="tile{{post.uid}}" style="background:{{post.colorcode}};">
+            <img id="projectimg" src="{{post.thumbnail}}" />
+            <project-title>{{post.title}}</project-title>
+            <project-tag>{{post.maintag}}</project-tag>
+            <script>
+              // console.log('{{post.uid}}');
+            </script>
+        </thumbnail-tile>
+      </core-item>
+    </template>
+  </core-menu>
+</template>
+  <script>
+    Polymer({
+
+    });
+  </script>
+</polymer-element>

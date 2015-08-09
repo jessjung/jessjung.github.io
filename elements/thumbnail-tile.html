@@ -1,0 +1,122 @@
+<!-- <link rel="import" href="content-data.html"> -->
+
+<polymer-element name="thumbnail-tile" on-tap={{active}}>
+  <template>
+  <style>
+  :host{
+    width: 420px;
+    height: 186px;
+    position: relative;
+    float:left;
+  }
+  polyfill-next-selector { content: 'img'; }
+  ::content img {
+    margin-left: 8px;
+    margin-right: 12px;
+    width: 170px;
+    height: 170px;
+  }
+  @media (max-width: 720px) {
+    :host{
+      width: 100%;
+      height: 130px;
+      position: relative;
+      float:left;
+    }
+    polyfill-next-selector { content: 'img'; }
+    ::content img {
+      margin-left: 5px;
+      margin-right: 10px;
+      width: 120px;
+      height: 120px;
+    }
+  }
+  @media (min-width: 1300px) {
+    :host{
+      width: 440px;
+      height: 220px;
+      /*position: absolute;*/
+      float:left;
+    }
+    polyfill-next-selector { content: 'img'; }
+    ::content img {
+      margin-left: 10px;
+      margin-right: 15px;
+      width: 200px;
+      height: 200px;
+    }
+  }
+  polyfill-next-selector { content: 'img'; }
+  ::content img {
+    display: inline-block;
+    /*border-radius:50%;*/
+    -webkit-transition: width 0.38s linear 0s, height .38s linear 0s, padding .38s linear 0s;
+    transition: width 0.38s linear 0s, height .38s linear 0s, padding .38s linear 0s;
+  }
+  ul{
+    list-style-type: none;
+    padding:5px;
+    padding-top: 5%;
+  }
+  .show{
+    opacity: 1;
+  }
+  .title{
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .projectTag{
+    color: #000;
+    font-weight: 300;
+    font-size: 12px;
+    /*letter-spacing: 1px;*/
+    text-transform: uppercase;
+  }
+
+  /* Chrome, Safari, Opera */
+  @-webkit-keyframes positionChange {
+  0% {position: absolute;}
+  100% {position: relative;}
+  }
+
+  /* Standard syntax */
+  @keyframes positionChange {
+  0% {position: absolute;}
+  100% {position: relative;}
+  }
+  </style>
+  <div horizontal layout style="height:100%;">
+    <div self-center horizontal layout center>
+    <content select="img"></content>
+    </div>
+    <div flex self-start>
+    <ul>
+    <li><span class="projectTag"><content select="project-tag"></content></span></li>
+    <li><span class="title"><content select="project-title"></content></span></li>
+    </ul>
+  </div>
+  <div self-end><core-icon-button icon="subject" style="color:#fff; margin:3px;"></core-icon-button></div>
+  </div>
+  </template>
+  <script>
+
+    Polymer({
+      active: function(){
+        var selectedId = this.id.substring(4);
+        // console.log(selectedId);
+
+        var nav = document.querySelector("item-nav");
+        nav = nav.$.mainmenu;
+        selectedItem = nav.querySelectorAll("a")[selectedId];
+        // console.log(selectedItem);
+        nav.$.selection.select(selectedItem);
+        var thumbnailimg = document.querySelector("img#thumbnail");
+        thumbnailimg.src = this.querySelector("img#projectimg").src;
+        // console.log(this.querySelector("img#projectimg"));
+      }
+    });
+  </script>
+</polymer-element>

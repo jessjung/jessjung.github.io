@@ -1,0 +1,106 @@
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="content-data.html">
+<polymer-element name="item-nav">
+<template>
+  <style>
+      a.core-selected {
+        color: #000;
+      }
+      polyfill-next-selector { content: '.core-selected > paper-item'; }
+      ::content > paper-item {
+        border-left: 3px solid rgb(243,99,104);
+        opacity: 0.7;
+        color: #000;
+      }
+      .core-selected > paper-item {
+        border-left: 3px solid rgb(243,99,104);
+        opacity: 0.7;
+        color: #000;
+      }
+      paper-item{
+        color: #666666;
+        font-size: 13px;
+        opacity: 0.7;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      paper-item.core-selected{
+        /*background-color: #f36368;*/
+      }
+      .button-content{
+        font-size: 13px;
+      }
+      core-menu{
+        margin-left: 25px;
+      }
+  </style>
+  <content-data id="contents" posts="{{posts}}"></content-data>
+  <core-menu id="mainmenu">
+    <a href="../#all"><paper-item on-click={{allTapped}} id="all">All</paper-item></a>
+    <template repeat="{{post in posts}}">
+      <a href="#article{{post.uid}}">
+        <paper-item on-click={{tapped}} id="{{post.initial}}">
+          {{post.title}}
+          <script>
+            // var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            // if({{post.selected}}){
+            //   if (isChrome){
+            //       var b = document.querySelector('profile-coin::shadow #back');
+            //   }else{
+            //       var b = document.getElementById('back');
+            //   }
+            //   var i = document.querySelector('img#thumbnail');
+            //   i.src = '{{post.thumbnail}}';
+            //   var t = document.querySelector('.menu-label');
+            //   t.innerHTML = '{{post.title}}';
+            // }
+          </script>
+        </paper-item>
+      </a>
+    </template>
+  </core-menu>
+</template>
+<script>
+  Polymer({
+    ready: function(){
+      // console.log(this);
+    },
+    tapped: function(event, detail, sender){
+      changeThumbnail();
+      var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+      if (!isChrome){
+        var route = 'article'+sender.templateInstance.model.post.uid;
+        for(var i = 1; i <8; i++){
+          var id = 'article'+i.toString();
+          // console.log(isChrome);
+          var item = document.getElementById(id);
+          item.className = "hide";
+        }
+        var newarticle = document.getElementById(route);
+        newarticle.className = "show";
+        newarticle.getElementsByTagName("div")[0].scrollIntoView();
+        // console.log(newarticle);
+      }
+      function changeThumbnail(){
+        var i = document.querySelector('img#thumbnail');
+        i.src = sender.templateInstance.model.post.thumbnail;
+      }
+    },
+    allTapped: function(event, detail, sender){
+      var nav = document.querySelector("item-nav");
+      nav = nav.$.mainmenu;
+      selectedItem = nav.querySelectorAll("a")[0];
+      // console.log(selectedItem);
+      nav.$.selection.select(selectedItem);
+      // console.log("allTapped: ");
+      // console.log(sender);
+      var i = document.querySelector('img#thumbnail');
+      i.src = "";
+
+
+    }
+  });
+</script>
+</polymer-element>

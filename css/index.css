@@ -1,0 +1,55 @@
+html,body,section {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 12px;
+  line-height: 1.43;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/*div{
+  height: 100%;
+}*/
+a{
+  text-decoration: none;
+  color: #666666;
+}
+core-scaffold::shadow core-toolbar, core-scaffold::shadow core-header-panel{
+  color: #666666;
+  background-color:transparent;
+}
+
+@media (min-width: 1000px) {
+  core-scaffold::shadow core-toolbar {
+    display: none;
+    visibility: hidden;
+  }
+  core-toolbar {
+    display: none;
+    visibility: hidden;
+  }
+}
+
+.show{
+  display: block;
+}
+.hide{
+  display: none;
+}
+.profile-wrapper{
+  margin: 20px;
+  width: 220px;
+  height: 220px;
+  /*background-color: red;*/
+}
+.space{
+  width: auto;
+  height:10px;
+}
+
+.darkshadow {
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+}
+.lightshadow{
+  box-shadow: 0 7px 10px 0 rgba(0, 0, 0, 0.20);
+}

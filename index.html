@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+  <title>Jess Jung | Interaction designer</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Jess Jiyoung Jung">
+  <meta name="description" content="This is a Jess Jung's portfolio website including her exploration over interaction design / UX / UI / visual design from web to mobile application. This website is coded by Jess using Polymer framework and web components">
+  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="elements/cover-inspiration.html">
+  <link rel="import" href="bower_components/core-scaffold/core-scaffold.html">
+  <link rel="import" href="elements/profile-coin.html">
+  <link rel="import" href="elements/item-nav.html">
+  <!-- <link rel="import" href="elements/content-data.html"> -->
+  <link rel="import" href="elements/thumbnail-tiles.html">
+  <link rel="import" href="elements/article-box.html">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body unresolved fullbleed>
+  <cover-inspiration></cover-inspiration>
+  <core-scaffold id="scaffold">
+    <!--Left nav -->
+    <nav>
+      <!--Top Left thumnail box -->
+      <div class="profile-wrapper">
+      <profile-coin>
+        <name>JESS JUNG</name>
+        <job-title>Interaction Designer</job-title>
+        <desc>Jess Jung is an Interaction Designer who recently achieved a Masters degree from NYU Interactive Telecommunication Program. She has a BFA in Industrial design and a background in Advertising and Visual design. She is not only a designer who codes, but passionate about seeking for a new form of user interaction and user experience from collecting creative technology.</desc>
+        <img id="thumbnail" src="images/pb-th.jpg" class="lightshadow">
+      </profile-coin>
+    </div>
+    <!--Left side item nav menus -->
+    <div class="space"></div>
+    <item-nav></item-nav>
+    </nav>
+    <!--Main article area-->
+    <div layout horizontal fit id="maincontent">
+      <!-- <thumbnail-tiles id="all"></thumbnail-tiles> -->
+      <article-box></article-box>
+    </div>
+  </core-scaffold>
+</body>
+<script>
+
+  /***************************** Google analytics ***************************/
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-54576825-1', 'auto');
+  ga('send', 'pageview');
+
+  var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+  if(isFirefox) window.location.assign("http://jessjung.github.io/");
+
+  var debug = true;
+  var wasAll = false;
+  var previousHash;
+  var content = document.querySelector("div#maincontent");
+  var profile = document.querySelector('profile-coin');
+  var article = document.querySelector('article-box');
+
+  var nav = document.querySelector('item-nav');
+  document.querySelector("core-scaffold").style.display = "none";
+
+  var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
+    profile.addEventListener('mouseenter', function() {
+      // console.log(document.querySelector('img#thumbnail'));
+      this.$.about.className = "about-title opacityup";
+      document.querySelector('img#thumbnail').className = 'darkshadow';
+    });
+    profile.addEventListener('mouseleave', function() {
+      this.$.about.className = "about-title opacitydown";
+      document.querySelector('img#thumbnail').className = 'lightshadow';
+    });
+
+    nav.addEventListener('core-select', function() {
+      navmenu = nav.$.mainmenu;
+      // console.log("nav eventlistener for core-select");
+      var menulists = this.$.mainmenu;
+      var selectedItem = menulists.getElementsByClassName('core-selected')[0];
+
+      if(selectedItem !== undefined){
+        if (isChrome){
+          var b = document.querySelector('profile-coin::shadow #back');
+          var f = document.querySelector('profile-coin::shadow #front');
+          var previousArticle = document.querySelector('article-box::shadow '+previousHash);
+          if(previousArticle != null){
+            previousArticle.className = "hide";
+          }
+        }else{
+          var b = profile.$.back;
+          var f = profile.$.front;
+        }
+        if(selectedItem.hash == "#all"){
+          // console.log("All page");
+          article.className = "hide";
+          var tiles = document.createElement('thumbnail-tiles');
+          content.appendChild(tiles);
+
+
+          var timeout = setTimeout(function(){
+            b.className = "back-side mirror rotatebackandfadein";
+            f.className = "front-side rotatebackandfadeout";
+            clearTimeout(timeout);
+          },380);
+
+          wasAll = true;
+
+        }else{
+          // console.log(selectedItem.hash);
+          article.className = "";
+          if(wasAll) {
+            var tiles = document.querySelector('thumbnail-tiles');
+            content.removeChild(tiles);
+            wasAll = false;
+          }
+
+          /*************** profile-coin Onchange ***************/
+          b.className = "back-side mirror rotateandfadeout";
+          f.className = "front-side rotateandfadein";
+
+          if (isChrome){
+          /*************** Maincontents Onchange ***************/
+            var selectedArticle = document.querySelector('article-box::shadow '+selectedItem.hash);
+            if(selectedArticle != null){
+            selectedArticle.className = "show";
+            selectedArticle.getElementsByTagName("div")[0].scrollIntoView();
+            }
+            previousHash = selectedItem.hash;
+          }else{
+            for(var i = 1; i <8; i++){
+              var id = 'article'+i.toString();
+              // console.log(isChrome);
+              var item = document.getElementById(id);
+              item.className = "hide";
+            }
+            var selectedId = selectedItem.hash.substring(1);
+            document.getElementById(selectedId).className = "show";
+          }
+        }
+      }
+    });
+
+</script>
+</html>
